@@ -1,280 +1,230 @@
 <!DOCTYPE html>
 <html lang="bn">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>LoveBird Social App</title>
-  <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, sans-serif; }
-    body { background-color: #0f172a; color: #fff; display: flex; flex-direction: column; align-items: center; min-height: 100vh; padding: 15px; }
-    
-    .auth-card { background-color: #1e293b; padding: 25px; border-radius: 12px; width: 100%; max-width: 360px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); text-align: center; margin-top: 50px; }
-    .auth-card h2 { color: #10b981; margin-bottom: 20px; }
-    .auth-card input { width: 100%; padding: 12px; margin: 8px 0; background-color: #0f172a; border: 1px solid #334155; color: #fff; border-radius: 6px; outline: none; }
-    
-    .password-wrapper { position: relative; width: 100%; }
-    .password-wrapper input { padding-right: 40px; }
-    .toggle-password { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); cursor: pointer; font-size: 16px; user-select: none; }
-    
-    .auth-card button { width: 100%; padding: 12px; background-color: #10b981; border: none; color: #fff; font-weight: bold; border-radius: 6px; cursor: pointer; margin-top: 10px; font-size: 16px; }
-    .auth-card button:hover { background-color: #059669; }
-    .auth-card p { margin-top: 12px; font-size: 14px; color: #94a3b8; }
-    .auth-card span { color: #10b981; cursor: pointer; font-weight: bold; }
-    .forgot-btn { color: #f43f5e !important; font-size: 13px; display: block; margin-top: 10px; cursor: pointer; }
-    #auth-message { margin-top: 10px; font-size: 13px; color: #f43f5e; word-break: break-all; }
-
-    .hidden { display: none !important; }
-    .header { width: 100%; max-width: 450px; display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #334155; margin-bottom: 15px; }
-    .header h1 { color: #10b981; font-size: 24px; }
-    .user-info { font-size: 13px; color: #94a3b8; display: flex; gap: 10px; align-items: center; }
-    .logout-btn { background: #f43f5e; color: #fff; border: none; padding: 4px 8px; border-radius: 4px; cursor: pointer; font-size: 12px; }
-    
-    .card { background-color: #1e293b; padding: 20px; border-radius: 12px; width: 100%; max-width: 450px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); margin-bottom: 15px; }
-    textarea { width: 100%; padding: 10px; background-color: #0f172a; border: 1px solid #334155; color: #fff; border-radius: 6px; outline: none; resize: none; height: 70px; margin-bottom: 10px; }
-    .post-btn { width: 100%; padding: 10px; background-color: #10b981; border: none; color: #fff; font-weight: bold; border-radius: 6px; cursor: pointer; font-size: 15px; }
-    
-    .post { background-color: #1e293b; border-radius: 12px; padding: 15px; width: 100%; max-width: 450px; margin-bottom: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
-    .post-author { font-weight: bold; color: #10b981; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
-    .post-author-img { width: 32px; height: 32px; background-color: #334155; border-radius: 50%; display: inline-block; }
-    .post-content { margin-bottom: 12px; font-size: 15px; line-height: 1.4; color: #f1f5f9; }
-    .post-actions { display: flex; justify-content: space-around; border-top: 1px solid #334155; border-bottom: 1px solid #334155; padding: 8px 0; margin-bottom: 10px; }
-    .action-btn { background: none; border: none; color: #94a3b8; font-size: 14px; cursor: pointer; padding: 5px; }
-    .action-btn:hover { color: #10b981; }
-    
-    .comments-container { margin-top: 8px; }
-    .comment-input-box { display: flex; gap: 5px; margin-bottom: 8px; }
-    .comment-input-box input { flex: 1; padding: 8px; background-color: #0f172a; border: 1px solid #334155; color: #fff; border-radius: 6px; font-size: 13px; }
-    .comment-input-box button { width: auto; padding: 8px 12px; font-size: 13px; background-color: #10b981; border: none; color: #fff; border-radius: 6px; cursor: pointer; }
-    .single-comment { background-color: #0f172a; padding: 6px 10px; border-radius: 6px; font-size: 13px; margin-top: 5px; color: #cbd5e1; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LoveBird Social App</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, sans-serif; }
+        body { background-color: #0f172a; color: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; padding: 20px; }
+        .auth-card { background-color: #1e293b; padding: 25px; border-radius: 12px; width: 100%; max-width: 400px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); text-align: center; margin-top: 50px; }
+        .auth-card h2 { color: #10b981; margin-bottom: 20px; }
+        .auth-card input { width: 100%; padding: 12px; margin: 8px 0; background-color: #0f172a; border: 1px solid #334155; color: #fff; border-radius: 6px; outline: none; }
+        .password-wrapper { position: relative; width: 100%; }
+        .password-wrapper input { padding-right: 40px; }
+        .toggle-password { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); cursor: pointer; font-size: 16px; }
+        .auth-card button { width: 100%; padding: 12px; background-color: #10b981; border: none; color: #fff; border-radius: 6px; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 10px; }
+        .auth-card button:hover { background-color: #059669; }
+        .auth-card p { margin-top: 12px; font-size: 14px; color: #94a3b8; }
+        .auth-card span { color: #10b981; cursor: pointer; font-weight: bold; }
+        .forgot-btn { color: #f43f5e !important; font-size: 13px; display: block; margin-top: 10px; cursor: pointer; }
+        #auth-message { margin-top: 10px; font-size: 13px; color: #f43f5e; word-break: break-all; }
+        .hidden { display: none !important; }
+        header { width: 100%; max-width: 450px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        header h1 { color: #10b981; font-size: 24px; }
+        .user-info { font-size: 13px; color: #94a3b8; display: flex; gap: 10px; align-items: center; }
+        .logout-btn { background: #f43f5e; color: #fff; border: none; padding: 4px 8px; border-radius: 4px; cursor: pointer; font-size: 12px; }
+        .card { background-color: #1e293b; padding: 20px; border-radius: 12px; width: 100%; max-width: 450px; margin-bottom: 15px; }
+        textarea { width: 100%; padding: 10px; background-color: #0f172a; border: 1px solid #334155; color: #fff; border-radius: 6px; resize: none; height: 70px; margin-bottom: 10px; }
+        .post-btn { width: 100%; padding: 10px; background-color: #10b981; border: none; color: #fff; font-weight: bold; border-radius: 6px; cursor: pointer; font-size: 15px; }
+        .post { background-color: #1e293b; border-radius: 12px; padding: 15px; width: 100%; max-width: 450px; margin-bottom: 15px; }
+        .post-author { font-weight: bold; color: #10b981; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+        .post-author-img { width: 32px; height: 32px; background-color: #334155; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; }
+        .post-content { margin-bottom: 12px; font-size: 15px; line-height: 1.4; color: #f1f5f9; }
+        .post-actions { display: flex; justify-content: space-around; border-top: 1px solid #334155; border-bottom: 1px solid #334155; padding: 6px 0; margin-bottom: 10px; }
+        .action-btn { background: none; border: none; color: #94a3b8; font-size: 14px; cursor: pointer; padding: 4px 8px; border-radius: 4px; }
+        .action-btn:hover { color: #10b981; }
+        .comments-container { margin-top: 8px; }
+        .comment-input-box { display: flex; gap: 5px; margin-bottom: 8px; }
+        .comment-input-box input { flex: 1; padding: 8px; background-color: #0f172a; border: 1px solid #334155; color: #fff; border-radius: 6px; font-size: 13px; }
+        .comment-input-box button { width: auto; padding: 8px 12px; font-size: 13px; background-color: #10b981; border: none; color: #fff; border-radius: 6px; cursor: pointer; }
+        .single-comment { background-color: #0f172a; padding: 6px 10px; border-radius: 6px; font-size: 13px; margin-bottom: 5px; }
+    </style>
 </head>
 <body>
 
-  <!-- Auth Box -->
-  <div id="auth-section" class="auth-card">
-    
-    <!-- Login Form -->
-    <div id="login-form">
-      <h2>LoveBird Login</h2>
-      <input type="email" id="login-email" placeholder="ইমেইল">
-      <div class="password-wrapper">
-        <input type="password" id="login-password" placeholder="পাসওয়ার্ড">
-        <span class="toggle-password" onclick="togglePasswordVisibility('login-password', this)">👁️</span>
-      </div>
-      <button onclick="handleLogin()">লগইন করুন</button>
-      <span class="forgot-btn" onclick="showForgotPasswordForm()">পাসওয়ার্ড ভুলে গেছেন?</span>
-      <p>একাউন্ট নেই? <span onclick="toggleForm('signup')">নতুন একাউন্ট খুলুন</span></p>
+    <!-- Auth Box -->
+    <div id="auth-section" class="auth-card">
+        
+        <!-- Login Form -->
+        <div id="login-form">
+            <h2>LoveBird Login</h2>
+            <input type="email" id="login-email" placeholder="ইমেইল">
+            <div class="password-wrapper">
+                <input type="password" id="login-password" placeholder="পাসওয়ার্ড">
+                <span class="toggle-password" onclick="togglePasswordVisibility('login-password', this)">👁️</span>
+            </div>
+            <button onclick="handleLogin()">লগইন করুন</button>
+            <span class="forgot-btn" onclick="showForgotPasswordForm()">পাসওয়ার্ড ভুলে গেছেন?</span>
+            <p>একাউন্ট নেই? <span onclick="toggleForm('signup')">নতুন একাউন্ট খুলুন</span></p>
+        </div>
+
+        <!-- Signup Form -->
+        <div id="signup-form" class="hidden">
+            <h2>Create Account</h2>
+            <input type="text" id="signup-name" placeholder="আপনার পুরো নাম">
+            <input type="email" id="signup-email" placeholder="ইমেইল">
+            <div class="password-wrapper">
+                <input type="password" id="signup-password" placeholder="নতুন পাসওয়ার্ড">
+                <span class="toggle-password" onclick="togglePasswordVisibility('signup-password', this)">👁️</span>
+            </div>
+            <button onclick="handleSignup()">একাউন্ট তৈরি করুন</button>
+            <p>একাউন্ট আছে? <span onclick="toggleForm('login')">লগইন করুন</span></p>
+        </div>
+
+        <!-- Forgot Password Form -->
+        <div id="forgot-form" class="hidden">
+            <h2>Reset Password</h2>
+            <p style="font-size: 13px; color: #cbd5e1; margin-bottom: 10px;">আপনার রেজিস্টার্ড ইমেইলটি লিখুন:</p>
+            <input type="email" id="reset-email" placeholder="আপনার রেজিস্টার্ড ইমেইল">
+            <button onclick="handleForgotPassword()">পাসওয়ার্ড রিসেট লিংক পাঠান</button>
+            <p><span onclick="toggleForm('login')">লগইন পেজে ফিরে যান</span></p>
+        </div>
+
+        <div id="auth-message"></div>
     </div>
 
-    <!-- Signup Form -->
-    <div id="signup-form" class="hidden">
-      <h2>Create Account</h2>
-      <input type="text" id="signup-name" placeholder="আপনার পুরো নাম">
-      <input type="email" id="signup-email" placeholder="ইমেইল">
-      <div class="password-wrapper">
-        <input type="password" id="signup-password" placeholder="নতুন পাসওয়ার্ড">
-        <span class="toggle-password" onclick="togglePasswordVisibility('signup-password', this)">👁️</span>
-      </div>
-      <button onclick="handleSignup()">একাউন্ট তৈরি করুন</button>
-      <p>একাউন্ট আছে? <span onclick="toggleForm('login')">লগইন করুন</span></p>
+    <!-- Social Feed -->
+    <div id="app-section" class="hidden" style="width: 100%; display: flex; flex-direction: column; align-items: center;">
+        <div class="header">
+            <h1>LoveBird</h1>
+            <div class="user-info">
+                <span id="current-user-name">User</span>
+                <button class="logout-btn" onclick="handleLogout()">Logout</button>
+            </div>
+        </div>
+
+        <div class="card">
+            <textarea id="post-text" placeholder="কী চিন্তা করছেন? লিখুন..."></textarea>
+            <button class="post-btn" onclick="createPost()">Post করুন</button>
+        </div>
+
+        <div id="news-feed" style="width: 100%; display: flex; flex-direction: column; align-items: center;"></div>
     </div>
 
-    <!-- Forgot Password Form -->
-    <div id="forgot-form" class="hidden">
-      <h2>Reset Password</h2>
-      <p style="font-size: 13px; color: #cbd5e1; margin-bottom: 10px;">আপনার ইমেইল দিন, পাসওয়ার্ড রিসেট করার লিংক পাঠানো হবে:</p>
-      <input type="email" id="reset-email" placeholder="আপনার রেজিস্টার্ড ইমেইল">
-      <button onclick="handleForgotPassword()">পাসওয়ার্ড রিসেট লিংক পাঠান</button>
-      <p><span onclick="toggleForm('login')">লগইন পেজে ফিরে যান</span></p>
-    </div>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
-    <div id="auth-message"></div>
-  </div>
+        // Firebase Credentials
+        const firebaseConfig = {
+          apiKey: "AIzaSyDcc06iibqLo9uczXnZJdikTUa80GyKxWw",
+          authDomain: "love-bird-129df.firebaseapp.com",
+          databaseURL: "https://love-bird-129df-default-rtdb.firebaseio.com",
+          projectId: "love-bird-129df",
+          storageBucket: "love-bird-129df.appspot.com",
+          messagingSenderId: "702723507464",
+          appId: "1:702723507464:web:bb6165276da934105758bd",
+          measurementId: "G-Q0HFL519P3"
+        };
 
-  <!-- Social Feed -->
-  <div id="app-section" class="hidden" style="width: 100%; display: flex; flex-direction: column; align-items: center;">
-    <div class="header">
-      <h1>LoveBird</h1>
-      <div class="user-info">
-        <span id="current-user-name">User</span>
-        <button class="logout-btn" onclick="handleLogout()">Logout</button>
-      </div>
-    </div>
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        let currentUser = null;
 
-    <div class="card">
-      <textarea id="post-text" placeholder="কী চিন্তা করছেন? লিখুন..."></textarea>
-      <button class="post-btn" onclick="createPost()">Post করুন</button>
-    </div>
-
-    <div id="news-feed" style="width: 100%; display: flex; flex-direction: column; align-items: center;"></div>
-  </div>
-
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail, updateProfile, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-
-    // Firebase Credentials
-const firebaseConfig = {
-        apiKey: "AIzaSyDcc06iibqLo9uczXnZJdikTUa80GyKxWw",
-              authDomain: "love-bird-129df.firebaseapp.com",
-                    databaseURL: "https://love-bird-129df-default-rtdb.firebaseio.com",
-                          projectId: "love-bird-129df",
-                                storageBucket: "love-bird-129df.appspot.com",
-                                      messagingSenderId: "702723507464",
-                                            appId: "1:702723507464:web:bb6165276da934105758bd",
-                                                  measurementId: "G-Q0HFL519P3"
-                                                      };
-}
-
-
-
-
-
-
-
-
-
-}
-
-
-
-
-
-
-
-
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    let currentUser = null;
-
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        currentUser = user;
-        document.getElementById('auth-section').classList.add('hidden');
-        document.getElementById('app-section').classList.remove('hidden');
-        document.getElementById('current-user-name').innerText = user.displayName || user.email.split('@')[0];
-      } else {
-        currentUser = null;
-        document.getElementById('auth-section').classList.remove('hidden');
-        document.getElementById('app-section').classList.add('hidden');
-      }
-    });
-
-    window.togglePasswordVisibility = (inputId, icon) => {
-      const input = document.getElementById(inputId);
-      if (input.type === "password") {
-        input.type = "text";
-        icon.innerText = "🙈";
-      } else {
-        input.type = "password";
-        icon.innerText = "👁️";
-      }
-    };
-
-    window.toggleForm = (type) => {
-      document.getElementById('login-form').classList.add('hidden');
-      document.getElementById('signup-form').classList.add('hidden');
-      document.getElementById('forgot-form').classList.add('hidden');
-      document.getElementById('auth-message').innerText = "";
-
-      if (type === 'signup') document.getElementById('signup-form').classList.remove('hidden');
-      else if (type === 'forgot') document.getElementById('forgot-form').classList.remove('hidden');
-      else document.getElementById('login-form').classList.remove('hidden');
-    };
-
-    window.showForgotPasswordForm = () => window.toggleForm('forgot');
-
-    window.handleSignup = () => {
-      const name = document.getElementById('signup-name').value;
-      const email = document.getElementById('signup-email').value;
-      const password = document.getElementById('signup-password').value;
-      const msg = document.getElementById('auth-message');
-
-      if (!name || !email || !password) { msg.style.color = "#f43f5e"; msg.innerText = "সবগুলো ঘর পূরণ করুন"; return; }
-
-      createUserWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => updateProfile(userCredential.user, { displayName: name }))
-        .then(() => alert("একাউন্ট তৈরি সফল হয়েছে!"))
-        .catch(err => { msg.style.color = "#f43f5e"; msg.innerText = err.message; });
-    };
-
-    window.handleLogin = () => {
-      const email = document.getElementById('login-email').value;
-      const password = document.getElementById('login-password').value;
-      const msg = document.getElementById('auth-message');
-
-      if (!email || !password) { msg.style.color = "#f43f5e"; msg.innerText = "ইমেইল ও পাসওয়ার্ড দিন"; return; }
-
-      signInWithEmailAndPassword(auth, email, password)
-        .catch(err => { msg.style.color = "#f43f5e"; msg.innerText = "ইমেইল বা পাসওয়ার্ড ভুল হয়েছে"; });
-    };
-
-    window.handleForgotPassword = () => {
-      const email = document.getElementById('reset-email').value;
-      const msg = document.getElementById('auth-message');
-
-      if (!email) {
-        msg.style.color = "#f43f5e";
-        msg.innerText = "ইমেইল এড্রেসটি টাইপ করুন";
-        return;
-      }
-
-      sendPasswordResetEmail(auth, email)
-        .then(() => {
-          msg.style.color = "#10b981";
-          msg.innerText = "আপনার ইমেইলে রিসেট লিংক পাঠানো হয়েছে! ইনবক্স বা স্প্যাম ফোল্ডার চেক করুন।";
-        })
-        .catch(err => {
-          msg.style.color = "#f43f5e";
-          msg.innerText = "এই ইমেইলে কোনো একাউন্ট পাওয়া যায়নি।";
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                currentUser = user;
+                document.getElementById('auth-section').classList.add('hidden');
+                document.getElementById('app-section').classList.remove('hidden');
+                document.getElementById('current-user-name').innerText = user.displayName || user.email;
+            } else {
+                currentUser = null;
+                document.getElementById('auth-section').classList.remove('hidden');
+                document.getElementById('app-section').classList.add('hidden');
+            }
         });
-    };
 
-    window.handleLogout = () => signOut(auth);
+        window.togglePasswordVisibility = (inputId, icon) => {
+            const input = document.getElementById(inputId);
+            if (input.type === "password") {
+                input.type = "text";
+                icon.innerText = "🙈";
+            } else {
+                input.type = "password";
+                icon.innerText = "👁️";
+            }
+        };
 
-    window.createPost = () => {
-      const text = document.getElementById('post-text').value.trim();
-      if (!text) return;
+        window.toggleForm = (type) => {
+            document.getElementById('login-form').classList.add('hidden');
+            document.getElementById('signup-form').classList.add('hidden');
+            document.getElementById('forgot-form').classList.add('hidden');
+            document.getElementById('auth-message').innerText = "";
 
-      const feed = document.getElementById('news-feed');
-      const newPost = document.createElement('div');
-      newPost.className = 'post';
-      newPost.innerHTML = `
-        <div class="post-author"><span class="post-author-img"></span>${currentUser ? (currentUser.displayName || currentUser.email) : 'User'}</div>
-        <div class="post-content">${text}</div>
-        <div class="post-actions">
-          <button class="action-btn" onclick="likePost(this)">❤️ <span class="like-count">0</span> Like</button>
-          <button class="action-btn">💬 Comment</button>
-        </div>
-        <div class="comments-container">
-          <div class="comment-input-box">
-            <input type="text" placeholder="কমেন্ট লিখুন...">
-            <button onclick="addComment(this)">Comment</button>
-          </div>
-          <div class="comment-list"></div>
-        </div>
-      `;
-      feed.prepend(newPost);
-      document.getElementById('post-text').value = '';
-    };
+            if (type === 'signup') document.getElementById('signup-form').classList.remove('hidden');
+            else if (type === 'forgot') document.getElementById('forgot-form').classList.remove('hidden');
+            else document.getElementById('login-form').classList.remove('hidden');
+        };
 
-    window.likePost = (btn) => {
-      const countSpan = btn.querySelector('.like-count');
-      countSpan.innerText = parseInt(countSpan.innerText) + 1;
-      btn.style.color = '#10b981';
-    };
+        window.showForgotPasswordForm = () => {
+            window.toggleForm('forgot');
+        };
 
-    window.addComment = (btn) => {
-      const input = btn.previousElementSibling;
-      const text = input.value.trim();
-      if (!text) return;
-      const commentList = btn.parentElement.nextElementSibling;
-      const newComment = document.createElement('div');
-      newComment.className = 'single-comment';
-      newComment.innerText = text;
-      commentList.appendChild(newComment);
-      input.value = '';
-    };
-  </script>
+        window.handleSignup = () => {
+            const email = document.getElementById('signup-email').value;
+            const password = document.getElementById('signup-password').value;
+            const msg = document.getElementById('auth-message');
+
+            if (!email || !password) {
+                msg.innerText = "ইমেইল এবং পাসওয়ার্ড দিন।";
+                return;
+            }
+
+            createUserWithEmailAndPassword(auth, email, password)
+                .then(() => {
+                    msg.style.color = "#10b981";
+                    msg.innerText = "একাউন্ট সফলভাবে তৈরি হয়েছে!";
+                })
+                .catch((error) => {
+                    msg.style.color = "#f43f5e";
+                    msg.innerText = error.message;
+                });
+        };
+
+        window.handleLogin = () => {
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+            const msg = document.getElementById('auth-message');
+
+            if (!email || !password) {
+                msg.innerText = "ইমেইল এবং পাসওয়ার্ড দিন।";
+                return;
+            }
+
+            signInWithEmailAndPassword(auth, email, password)
+                .then(() => {
+                    msg.innerText = "";
+                })
+                .catch((error) => {
+                    msg.style.color = "#f43f5e";
+                    msg.innerText = "লগইন ব্যর্থ হয়েছে: " + error.message;
+                });
+        };
+
+        window.handleForgotPassword = () => {
+            const email = document.getElementById('reset-email').value;
+            const msg = document.getElementById('auth-message');
+
+            if (!email) {
+                msg.innerText = "ইমেইল টাইপ করুন।";
+                return;
+            }
+
+            sendPasswordResetEmail(auth, email)
+                .then(() => {
+                    msg.style.color = "#10b981";
+                    msg.innerText = "পাসওয়ার্ড রিসেট লিংক ইমেইলে পাঠানো হয়েছে!";
+                })
+                .catch((error) => {
+                    msg.style.color = "#f43f5e";
+                    msg.innerText = error.message;
+                });
+        };
+
+        window.handleLogout = () => {
+            signOut(auth);
+        };
+    </script>
 </body>
 </html>
