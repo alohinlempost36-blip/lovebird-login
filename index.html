@@ -1,1 +1,91 @@
-https://alohinlempost36-blip.github.io/lovebird-login/
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LoveBird Login & Signup</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, sans-serif; }
+    body { background-color: #0f172a; color: #fff; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+    .card { background-color: #1e293b; padding: 25px; border-radius: 12px; width: 90%; max-width: 360px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); text-align: center; }
+    h2 { color: #10b981; margin-bottom: 20px; }
+    input { width: 100%; padding: 12px; margin: 8px 0; background-color: #0f172a; border: 1px solid #334155; color: #fff; border-radius: 6px; outline: none; }
+    button { width: 100%; padding: 12px; background-color: #10b981; border: none; color: #fff; font-weight: bold; border-radius: 6px; cursor: pointer; margin-top: 10px; font-size: 16px; }
+    button:hover { background-color: #059669; }
+    p { margin-top: 15px; font-size: 14px; color: #94a3b8; }
+    span { color: #10b981; cursor: pointer; font-weight: bold; }
+    .hidden { display: none; }
+    #message { margin-top: 10px; font-size: 13px; color: #f43f5e; }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <div id="login-form">
+      <h2>LoveBird Login</h2>
+      <input type="email" id="login-email" placeholder="ইমেইল">
+      <input type="password" id="login-password" placeholder="পাসওয়ার্ড">
+      <button onclick="handleLogin()">লগইন করুন</button>
+      <p>একাউন্ট নেই? <span onclick="toggleForm()">নতুন একাউন্ট খুলুন</span></p>
+    </div>
+
+    <div id="signup-form" class="hidden">
+      <h2>Create Account</h2>
+      <input type="text" id="signup-name" placeholder="আপনার নাম">
+      <input type="email" id="signup-email" placeholder="ইমেইল">
+      <input type="password" id="signup-password" placeholder="নতুন পাসওয়ার্ড">
+      <button onclick="handleSignup()">একাউন্ট তৈরি করুন</button>
+      <p>একাউন্ট আছে? <span onclick="toggleForm()">লগইন করুন</span></p>
+    </div>
+
+    <div id="message"></div>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDemoKeyForLoveBirdLoginUi12345",
+      authDomain: "love-bird-129df.firebaseapp.com",
+      projectId: "love-bird-129df",
+      storageBucket: "love-bird-129df.appspot.com",
+      messagingSenderId: "1234567890",
+      appId: "1:1234567890:web:demo123456789"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    window.toggleForm = () => {
+      document.getElementById('login-form').classList.toggle('hidden');
+      document.getElementById('signup-form').classList.toggle('hidden');
+      document.getElementById('message').innerText = "";
+    };
+
+    window.handleSignup = () => {
+      const email = document.getElementById('signup-email').value;
+      const password = document.getElementById('signup-password').value;
+      const msg = document.getElementById('message');
+
+      if (!email || !password) { msg.innerText = "সবগুলো ঘর পূরণ করুন"; return; }
+
+      createUserWithEmailAndPassword(auth, email, password)
+        .then(() => { alert("একাউন্ট তৈরি সফল হয়েছে! এখন লগইন করুন।"); toggleForm(); })
+        .catch(err => { msg.innerText = err.message; });
+    };
+
+    window.handleLogin = () => {
+      const email = document.getElementById('login-email').value;
+      const password = document.getElementById('password').value;
+      const msg = document.getElementById('message');
+
+      if (!email || !password) { msg.innerText = "ইমেইল ও পাসওয়ার্ড দিন"; return; }
+
+      signInWithEmailAndPassword(auth, email, password)
+        .then(() => { alert("সফলভাবে লগইন হয়েছে!"); })
+        .catch(err => { msg.innerText = "ইমেইল বা পাসওয়ার্ড ভুল হয়েছে"; });
+    };
+  </script>
+</body>
+</html>
