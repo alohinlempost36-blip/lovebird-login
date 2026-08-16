@@ -11,6 +11,12 @@
     .auth-card { background-color: #1e293b; padding: 25px; border-radius: 12px; width: 100%; max-width: 360px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); text-align: center; margin-top: 50px; }
     .auth-card h2 { color: #10b981; margin-bottom: 20px; }
     .auth-card input { width: 100%; padding: 12px; margin: 8px 0; background-color: #0f172a; border: 1px solid #334155; color: #fff; border-radius: 6px; outline: none; }
+    
+    /* Password Input Wrapper for Show/Hide Toggle */
+    .password-wrapper { position: relative; width: 100%; }
+    .password-wrapper input { padding-right: 40px; }
+    .toggle-password { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); cursor: pointer; font-size: 16px; user-select: none; }
+    
     .auth-card button { width: 100%; padding: 12px; background-color: #10b981; border: none; color: #fff; font-weight: bold; border-radius: 6px; cursor: pointer; margin-top: 10px; font-size: 16px; }
     .auth-card button:hover { background-color: #059669; }
     .auth-card p { margin-top: 12px; font-size: 14px; color: #94a3b8; }
@@ -50,7 +56,10 @@
     <div id="login-form">
       <h2>LoveBird Login</h2>
       <input type="email" id="login-email" placeholder="ইমেইল">
-      <input type="password" id="login-password" placeholder="পাসওয়ার্ড">
+      <div class="password-wrapper">
+        <input type="password" id="login-password" placeholder="পাসওয়ার্ড">
+        <span class="toggle-password" onclick="togglePasswordVisibility('login-password', this)">👁️</span>
+      </div>
       <button onclick="handleLogin()">লগইন করুন</button>
       <span class="forgot-btn" onclick="handleForgotPassword()">পাসওয়ার্ড ভুলে গেছেন?</span>
       <p>একাউন্ট নেই? <span onclick="toggleForm()">নতুন একাউন্ট খুলুন</span></p>
@@ -60,7 +69,10 @@
       <h2>Create Account</h2>
       <input type="text" id="signup-name" placeholder="আপনার পুরো নাম">
       <input type="email" id="signup-email" placeholder="ইমেইল">
-      <input type="password" id="signup-password" placeholder="নতুন পাসওয়ার্ড">
+      <div class="password-wrapper">
+        <input type="password" id="signup-password" placeholder="নতুন পাসওয়ার্ড">
+        <span class="toggle-password" onclick="togglePasswordVisibility('signup-password', this)">👁️</span>
+      </div>
       <button onclick="handleSignup()">একাউন্ট তৈরি করুন</button>
       <p>একাউন্ট আছে? <span onclick="toggleForm()">লগইন করুন</span></p>
     </div>
@@ -115,6 +127,17 @@
         document.getElementById('app-section').classList.add('hidden');
       }
     });
+
+    window.togglePasswordVisibility = (inputId, icon) => {
+      const input = document.getElementById(inputId);
+      if (input.type === "password") {
+        input.type = "text";
+        icon.innerText = "🙈";
+      } else {
+        input.type = "password";
+        icon.innerText = "👁️";
+      }
+    };
 
     window.toggleForm = () => {
       document.getElementById('login-form').classList.toggle('hidden');
