@@ -8,17 +8,16 @@
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, sans-serif; }
     body { background-color: #0f172a; color: #fff; display: flex; flex-direction: column; align-items: center; min-height: 100vh; padding: 15px; }
     
-    /* Auth Box */
     .auth-card { background-color: #1e293b; padding: 25px; border-radius: 12px; width: 100%; max-width: 360px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); text-align: center; margin-top: 50px; }
     .auth-card h2 { color: #10b981; margin-bottom: 20px; }
     .auth-card input { width: 100%; padding: 12px; margin: 8px 0; background-color: #0f172a; border: 1px solid #334155; color: #fff; border-radius: 6px; outline: none; }
     .auth-card button { width: 100%; padding: 12px; background-color: #10b981; border: none; color: #fff; font-weight: bold; border-radius: 6px; cursor: pointer; margin-top: 10px; font-size: 16px; }
     .auth-card button:hover { background-color: #059669; }
-    .auth-card p { margin-top: 15px; font-size: 14px; color: #94a3b8; }
+    .auth-card p { margin-top: 12px; font-size: 14px; color: #94a3b8; }
     .auth-card span { color: #10b981; cursor: pointer; font-weight: bold; }
+    .forgot-btn { color: #f43f5e !important; font-size: 13px; display: block; margin-top: 8px; }
     #auth-message { margin-top: 10px; font-size: 13px; color: #f43f5e; }
 
-    /* Main App Layout */
     .hidden { display: none !important; }
     .header { width: 100%; max-width: 450px; display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #334155; margin-bottom: 15px; }
     .header h1 { color: #10b981; font-size: 24px; }
@@ -29,7 +28,6 @@
     textarea { width: 100%; padding: 10px; background-color: #0f172a; border: 1px solid #334155; color: #fff; border-radius: 6px; outline: none; resize: none; height: 70px; margin-bottom: 10px; }
     .post-btn { width: 100%; padding: 10px; background-color: #10b981; border: none; color: #fff; font-weight: bold; border-radius: 6px; cursor: pointer; font-size: 15px; }
     
-    /* Post Box Style */
     .post { background-color: #1e293b; border-radius: 12px; padding: 15px; width: 100%; max-width: 450px; margin-bottom: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
     .post-author { font-weight: bold; color: #10b981; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
     .post-author-img { width: 32px; height: 32px; background-color: #334155; border-radius: 50%; display: inline-block; }
@@ -47,13 +45,14 @@
 </head>
 <body>
 
-  <!-- Authentication System UI -->
+  <!-- Auth Box -->
   <div id="auth-section" class="auth-card">
     <div id="login-form">
       <h2>LoveBird Login</h2>
       <input type="email" id="login-email" placeholder="ইমেইল">
       <input type="password" id="login-password" placeholder="পাসওয়ার্ড">
       <button onclick="handleLogin()">লগইন করুন</button>
+      <span class="forgot-btn" onclick="handleForgotPassword()">পাসওয়ার্ড ভুলে গেছেন?</span>
       <p>একাউন্ট নেই? <span onclick="toggleForm()">নতুন একাউন্ট খুলুন</span></p>
     </div>
 
@@ -69,7 +68,7 @@
     <div id="auth-message"></div>
   </div>
 
-  <!-- Social Feed UI (Hidden by default) -->
+  <!-- Social Feed -->
   <div id="app-section" class="hidden" style="width: 100%; display: flex; flex-direction: column; align-items: center;">
     <div class="header">
       <h1>LoveBird</h1>
@@ -87,10 +86,9 @@
     <div id="news-feed" style="width: 100%; display: flex; flex-direction: column; align-items: center;"></div>
   </div>
 
-  <!-- Firebase Scripts -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail, updateProfile, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyDemoKeyForLoveBirdLoginUi12345",
@@ -105,7 +103,6 @@
     const auth = getAuth(app);
     let currentUser = null;
 
-    // Check login state
     onAuthStateChanged(auth, (user) => {
       if (user) {
         currentUser = user;
@@ -134,10 +131,8 @@
       if (!name || !email || !password) { msg.innerText = "সবগুলো ঘর পূরণ করুন"; return; }
 
       createUserWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-          return updateProfile(userCredential.user, { displayName: name });
-        })
-        .then(() => { alert("একাউন্ট তৈরি সফল হয়েছে!"); })
+        .then((userCredential) => updateProfile(userCredential.user, { displayName: name }))
+        .then(() => alert("একাউন্ট তৈরি সফল হয়েছে!"))
         .catch(err => { msg.innerText = err.message; });
     };
 
@@ -152,22 +147,37 @@
         .catch(err => { msg.innerText = "ইমেইল বা পাসওয়ার্ড ভুল হয়েছে"; });
     };
 
-    window.handleLogout = () => {
-      signOut(auth);
+    window.handleForgotPassword = () => {
+      const email = document.getElementById('login-email').value;
+      const msg = document.getElementById('auth-message');
+
+      if (!email) {
+        msg.innerText = "পাসওয়ার্ড রিসেট করতে ইমেইলের ঘরটি পূরণ করুন";
+        return;
+      }
+
+      sendPasswordResetEmail(auth, email)
+        .then(() => {
+          msg.style.color = "#10b981";
+          msg.innerText = "আপনার ইমেইলে রিসেট লিংক পাঠানো হয়েছে!";
+        })
+        .catch(err => {
+          msg.style.color = "#f43f5e";
+          msg.innerText = "ইমেইলটি সঠিক নয় অথবা রেজিস্টার করা নেই";
+        });
     };
+
+    window.handleLogout = () => signOut(auth);
 
     window.createPost = () => {
       const text = document.getElementById('post-text').value.trim();
-      if (!text) { alert("কিছু টাইপ করুন!"); return; }
+      if (!text) return;
 
       const feed = document.getElementById('news-feed');
       const newPost = document.createElement('div');
       newPost.className = 'post';
       newPost.innerHTML = `
-        <div class="post-author">
-          <span class="post-author-img"></span>
-          ${currentUser ? (currentUser.displayName || currentUser.email) : 'User'}
-        </div>
+        <div class="post-author"><span class="post-author-img"></span>${currentUser ? (currentUser.displayName || currentUser.email) : 'User'}</div>
         <div class="post-content">${text}</div>
         <div class="post-actions">
           <button class="action-btn" onclick="likePost(this)">❤️ <span class="like-count">0</span> Like</button>
@@ -181,15 +191,13 @@
           <div class="comment-list"></div>
         </div>
       `;
-
       feed.prepend(newPost);
       document.getElementById('post-text').value = '';
     };
 
     window.likePost = (btn) => {
       const countSpan = btn.querySelector('.like-count');
-      let currentLikes = parseInt(countSpan.innerText);
-      countSpan.innerText = currentLikes + 1;
+      countSpan.innerText = parseInt(countSpan.innerText) + 1;
       btn.style.color = '#10b981';
     };
 
@@ -197,12 +205,10 @@
       const input = btn.previousElementSibling;
       const text = input.value.trim();
       if (!text) return;
-
       const commentList = btn.parentElement.nextElementSibling;
       const newComment = document.createElement('div');
       newComment.className = 'single-comment';
       newComment.innerText = text;
-
       commentList.appendChild(newComment);
       input.value = '';
     };
