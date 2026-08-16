@@ -12,7 +12,6 @@
     .auth-card h2 { color: #10b981; margin-bottom: 20px; }
     .auth-card input { width: 100%; padding: 12px; margin: 8px 0; background-color: #0f172a; border: 1px solid #334155; color: #fff; border-radius: 6px; outline: none; }
     
-    /* Password Input Wrapper for Show/Hide Toggle */
     .password-wrapper { position: relative; width: 100%; }
     .password-wrapper input { padding-right: 40px; }
     .toggle-password { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); cursor: pointer; font-size: 16px; user-select: none; }
@@ -21,7 +20,7 @@
     .auth-card button:hover { background-color: #059669; }
     .auth-card p { margin-top: 12px; font-size: 14px; color: #94a3b8; }
     .auth-card span { color: #10b981; cursor: pointer; font-weight: bold; }
-    .forgot-btn { color: #f43f5e !important; font-size: 13px; display: block; margin-top: 8px; }
+    .forgot-btn { color: #f43f5e !important; font-size: 13px; display: block; margin-top: 10px; cursor: pointer; }
     #auth-message { margin-top: 10px; font-size: 13px; color: #f43f5e; }
 
     .hidden { display: none !important; }
@@ -53,6 +52,8 @@
 
   <!-- Auth Box -->
   <div id="auth-section" class="auth-card">
+    
+    <!-- Login Form -->
     <div id="login-form">
       <h2>LoveBird Login</h2>
       <input type="email" id="login-email" placeholder="ইমেইল">
@@ -61,10 +62,11 @@
         <span class="toggle-password" onclick="togglePasswordVisibility('login-password', this)">👁️</span>
       </div>
       <button onclick="handleLogin()">লগইন করুন</button>
-      <span class="forgot-btn" onclick="handleForgotPassword()">পাসওয়ার্ড ভুলে গেছেন?</span>
-      <p>একাউন্ট নেই? <span onclick="toggleForm()">নতুন একাউন্ট খুলুন</span></p>
+      <span class="forgot-btn" onclick="showForgotPasswordForm()">পাসওয়ার্ড ভুলে গেছেন?</span>
+      <p>একাউন্ট নেই? <span onclick="toggleForm('signup')">নতুন একাউন্ট খুলুন</span></p>
     </div>
 
+    <!-- Signup Form -->
     <div id="signup-form" class="hidden">
       <h2>Create Account</h2>
       <input type="text" id="signup-name" placeholder="আপনার পুরো নাম">
@@ -74,7 +76,16 @@
         <span class="toggle-password" onclick="togglePasswordVisibility('signup-password', this)">👁️</span>
       </div>
       <button onclick="handleSignup()">একাউন্ট তৈরি করুন</button>
-      <p>একাউন্ট আছে? <span onclick="toggleForm()">লগইন করুন</span></p>
+      <p>একাউন্ট আছে? <span onclick="toggleForm('login')">লগইন করুন</span></p>
+    </div>
+
+    <!-- Forgot Password Form -->
+    <div id="forgot-form" class="hidden">
+      <h2>Reset Password</h2>
+      <p style="font-size: 13px; color: #cbd5e1; margin-bottom: 10px;">আপনার ইমেইল দিন, পাসওয়ার্ড রিসেট করার লিংক পাঠানো হবে:</p>
+      <input type="email" id="reset-email" placeholder="আপনার রেজিস্টার্ড ইমেইল">
+      <button onclick="handleForgotPassword()">পাসওয়ার্ড রিসেট লিংক পাঠান</button>
+      <p><span onclick="toggleForm('login')">লগইন পেজে ফিরে যান</span></p>
     </div>
 
     <div id="auth-message"></div>
@@ -139,11 +150,18 @@
       }
     };
 
-    window.toggleForm = () => {
-      document.getElementById('login-form').classList.toggle('hidden');
-      document.getElementById('signup-form').classList.toggle('hidden');
+    window.toggleForm = (type) => {
+      document.getElementById('login-form').classList.add('hidden');
+      document.getElementById('signup-form').classList.add('hidden');
+      document.getElementById('forgot-form').classList.add('hidden');
       document.getElementById('auth-message').innerText = "";
+
+      if (type === 'signup') document.getElementById('signup-form').classList.remove('hidden');
+      else if (type === 'forgot') document.getElementById('forgot-form').classList.remove('hidden');
+      else document.getElementById('login-form').classList.remove('hidden');
     };
+
+    window.showForgotPasswordForm = () => window.toggleForm('forgot');
 
     window.handleSignup = () => {
       const name = document.getElementById('signup-name').value;
@@ -151,12 +169,12 @@
       const password = document.getElementById('signup-password').value;
       const msg = document.getElementById('auth-message');
 
-      if (!name || !email || !password) { msg.innerText = "সবগুলো ঘর পূরণ করুন"; return; }
+      if (!name || !email || !password) { msg.style.color = "#f43f5e"; msg.innerText = "সবগুলো ঘর পূরণ করুন"; return; }
 
       createUserWithEmailAndPassword(auth, email, password)
         .then((userCredential) => updateProfile(userCredential.user, { displayName: name }))
         .then(() => alert("একাউন্ট তৈরি সফল হয়েছে!"))
-        .catch(err => { msg.innerText = err.message; });
+        .catch(err => { msg.style.color = "#f43f5e"; msg.innerText = err.message; });
     };
 
     window.handleLogin = () => {
@@ -164,29 +182,30 @@
       const password = document.getElementById('login-password').value;
       const msg = document.getElementById('auth-message');
 
-      if (!email || !password) { msg.innerText = "ইমেইল ও পাসওয়ার্ড দিন"; return; }
+      if (!email || !password) { msg.style.color = "#f43f5e"; msg.innerText = "ইমেইল ও পাসওয়ার্ড দিন"; return; }
 
       signInWithEmailAndPassword(auth, email, password)
-        .catch(err => { msg.innerText = "ইমেইল বা পাসওয়ার্ড ভুল হয়েছে"; });
+        .catch(err => { msg.style.color = "#f43f5e"; msg.innerText = "ইমেইল বা পাসওয়ার্ড ভুল হয়েছে"; });
     };
 
     window.handleForgotPassword = () => {
-      const email = document.getElementById('login-email').value;
+      const email = document.getElementById('reset-email').value;
       const msg = document.getElementById('auth-message');
 
       if (!email) {
-        msg.innerText = "পাসওয়ার্ড রিসেট করতে ইমেইলের ঘরটি পূরণ করুন";
+        msg.style.color = "#f43f5e";
+        msg.innerText = "ইমেইল এড্রেসটি টাইপ করুন";
         return;
       }
 
       sendPasswordResetEmail(auth, email)
         .then(() => {
           msg.style.color = "#10b981";
-          msg.innerText = "আপনার ইমেইলে রিসেট লিংক পাঠানো হয়েছে!";
+          msg.innerText = "আপনার ইমেইলে রিসেট লিংক পাঠানো হয়েছে! ইনবক্স বা স্প্যাম ফোল্ডার চেক করুন।";
         })
         .catch(err => {
           msg.style.color = "#f43f5e";
-          msg.innerText = "ইমেইলটি সঠিক নয় অথবা রেজিস্টার করা নেই";
+          msg.innerText = "এই ইমেইলে কোনো একাউন্ট পাওয়া যায়নি।";
         });
     };
 
