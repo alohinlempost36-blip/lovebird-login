@@ -21,7 +21,7 @@
     .auth-card p { margin-top: 12px; font-size: 14px; color: #94a3b8; }
     .auth-card span { color: #10b981; cursor: pointer; font-weight: bold; }
     .forgot-btn { color: #f43f5e !important; font-size: 13px; display: block; margin-top: 10px; cursor: pointer; }
-    #auth-message { margin-top: 10px; font-size: 13px; color: #f43f5e; }
+    #auth-message { margin-top: 10px; font-size: 13px; color: #f43f5e; word-break: break-all; }
 
     .hidden { display: none !important; }
     .header { width: 100%; max-width: 450px; display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #334155; margin-bottom: 15px; }
@@ -113,8 +113,9 @@
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
     import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail, updateProfile, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
+    // Firebase Credentials
     const firebaseConfig = {
-      apiKey: "AIzaSyDcc06iibqLo9uczXnZJdikX18Xo",
+      apiKey: "AIzaSyDcc06iibqLo9uczXnZJdikX18Xo_EXAMPLE", // আপনার আসল Firebase Project Settings থেকে পাওয়া পূর্ণাঙ্গ API Key টি এখানে বসান
       authDomain: "love-bird-129df.firebaseapp.com",
       projectId: "love-bird-129df",
       storageBucket: "love-bird-129df.appspot.com",
