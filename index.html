@@ -114,14 +114,34 @@
     import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail, updateProfile, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
     // Firebase Credentials
-    const firebaseConfig = {
-      apiKey: "AIzaSyDcc06iibqLo9uczXnZJdikX18Xo_EXAMPLE", // আপনার আসল Firebase Project Settings থেকে পাওয়া পূর্ণাঙ্গ API Key টি এখানে বসান
-      authDomain: "love-bird-129df.firebaseapp.com",
-      projectId: "love-bird-129df",
-      storageBucket: "love-bird-129df.appspot.com",
-      messagingSenderId: "702723507464",
-      appId: "1:702723507464:web:bb6165276da934105758bd"
-    };
+const firebaseConfig = {
+        apiKey: "AIzaSyDcc06iibqLo9uczXnZJdikTUa80GyKxWw",
+              authDomain: "love-bird-129df.firebaseapp.com",
+                    databaseURL: "https://love-bird-129df-default-rtdb.firebaseio.com",
+                          projectId: "love-bird-129df",
+                                storageBucket: "love-bird-129df.appspot.com",
+                                      messagingSenderId: "702723507464",
+                                            appId: "1:702723507464:web:bb6165276da934105758bd",
+                                                  measurementId: "G-Q0HFL519P3"
+                                                      };
+}
+
+
+
+
+
+
+
+
+
+}
+
+
+
+
+
+
+
 
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
