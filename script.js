@@ -61,4 +61,3 @@ function performLogout() {
 
 window.handleLogout = performLogout;
 window.logout = performLogout;
- 
