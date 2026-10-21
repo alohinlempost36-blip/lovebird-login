@@ -47,13 +47,20 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // লগআউট ফিচার
+  // ID দিয়ে লগআউট
   if (logoutBtn) {
-    logoutBtn.addEventListener('click', (e) => {
-      e.preventDefault();
-      localStorage.removeItem('currentUser');
-      localStorage.removeItem('isLoggedIn');
-      window.location.href = 'login.html';
-    });
+    logoutBtn.addEventListener('click', performLogout);
   }
 });
+
+// সরাসরি HTML onclick হ্যান্ডলারের জন্য গ্লোবাল লগআউট ফাংশন
+function performLogout() {
+  localStorage.removeItem('currentUser');
+  localStorage.removeItem('isLoggedIn');
+  localStorage.removeItem('user');
+  window.location.href = 'login.html';
+}
+
+// যদি HTML-এ onclick="handleLogout()" দেওয়া থাকে
+window.handleLogout = performLogout;
+window.logout = performLogout;
