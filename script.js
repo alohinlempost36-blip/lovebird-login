@@ -4,11 +4,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const postsFeed = document.getElementById('postsFeed');
   const logoutBtn = document.getElementById('logoutBtn');
 
-  // আগের পোস্টসমূহ লোড
   let posts = JSON.parse(localStorage.getItem('appPosts')) || [];
   renderPosts();
 
-  // নতুন পোস্ট যোগ করা
   if (postBtn) {
     postBtn.addEventListener('click', () => {
       const text = postInput.value.trim();
@@ -30,7 +28,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // পোস্ট প্রদর্শন ফাংশন
   function renderPosts() {
     if (!postsFeed) return;
     postsFeed.innerHTML = '';
@@ -47,20 +44,21 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // ID দিয়ে লগআউট
   if (logoutBtn) {
-    logoutBtn.addEventListener('click', performLogout);
+    logoutBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      performLogout();
+    });
   }
 });
 
-// সরাসরি HTML onclick হ্যান্ডলারের জন্য গ্লোবাল লগআউট ফাংশন
+// গ্লোবাল লগআউট ফাংশন
 function performLogout() {
-  localStorage.removeItem('currentUser');
-  localStorage.removeItem('isLoggedIn');
-  localStorage.removeItem('user');
-  window.location.href = 'login.html';
+  localStorage.clear();
+  sessionStorage.clear();
+  window.location.replace("login.html");
 }
 
-// যদি HTML-এ onclick="handleLogout()" দেওয়া থাকে
 window.handleLogout = performLogout;
 window.logout = performLogout;
+ 
