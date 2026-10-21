@@ -1,270 +1,35 @@
 <!DOCTYPE html>
 <html lang="bn">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LoveBird Social App</title>
-    <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
-        body { background-color: #0f172a; color: #f8fafc; display: flex; flex-direction: column; align-items: center; min-height: 100vh; padding: 12px; }
-        
-        /* Auth Card */
-        .auth-card { background-color: #1e293b; padding: 25px; border-radius: 12px; width: 100%; max-width: 400px; text-align: center; margin-top: 40px; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3); }
-        .auth-card h2 { color: #10b981; margin-bottom: 20px; font-size: 24px; }
-        .auth-card input { width: 100%; padding: 12px; margin: 8px 0; background-color: #0f172a; border: 1px solid #334155; color: #fff; border-radius: 8px; outline: none; }
-        .password-wrapper { position: relative; width: 100%; }
-        .password-wrapper input { padding-right: 40px; }
-        .toggle-password { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); cursor: pointer; }
-        .auth-card button { width: 100%; padding: 12px; background-color: #10b981; border: none; color: #fff; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 10px; font-size: 15px; }
-        .auth-card p { margin-top: 15px; font-size: 14px; color: #94a3b8; }
-        .auth-card span { color: #10b981; cursor: pointer; font-weight: bold; }
-        #auth-message { margin-top: 10px; font-size: 13px; color: #f43f5e; }
-        .hidden { display: none !important; }
-        
-        /* Header & Navigation */
-        header { width: 100%; max-width: 500px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; background: #1e293b; padding: 12px 16px; border-radius: 12px; border: 1px solid #334155; sticky: top; }
-        header h1 { color: #10b981; font-size: 22px; font-weight: 800; letter-spacing: -0.5px; }
-        .user-info { font-size: 13px; color: #cbd5e1; display: flex; gap: 10px; align-items: center; }
-        .logout-btn { background: #f43f5e; color: #fff; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: bold; }
-        
-        /* Create Post */
-        .create-post-card { background-color: #1e293b; padding: 15px; border-radius: 12px; width: 100%; max-width: 500px; margin-bottom: 15px; border: 1px solid #334155; }
-        textarea { width: 100%; padding: 12px; background-color: #0f172a; border: 1px solid #334155; color: #fff; border-radius: 8px; resize: none; height: 80px; margin-bottom: 10px; outline: none; font-size: 14px; }
-        .post-btn { width: 100%; padding: 10px; background-color: #10b981; border: none; color: #fff; font-weight: bold; border-radius: 8px; cursor: pointer; font-size: 15px; }
-        
-        /* Newsfeed & Posts */
-        #news-feed { width: 100%; max-width: 500px; display: flex; flex-direction: column; gap: 15px; }
-        .post { background-color: #1e293b; border-radius: 12px; padding: 16px; width: 100%; border: 1px solid #334155; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
-        .post-header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
-        .avatar { width: 40px; height: 40px; background: linear-gradient(135deg, #10b981, #059669); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 16px; }
-        .post-author { font-size: 15px; font-weight: bold; color: #f8fafc; }
-        .post-time { font-size: 11px; color: #94a3b8; }
-        .post-content { font-size: 15px; color: #e2e8f0; margin-bottom: 14px; line-height: 1.5; white-space: pre-wrap; }
-        
-        /* FB Style Action Bar */
-        .post-actions { display: flex; justify-content: space-between; border-top: 1px solid #334155; border-bottom: 1px solid #334155; padding: 6px 0; margin-bottom: 12px; }
-        .action-btn { flex: 1; background: none; border: none; color: #94a3b8; font-size: 13px; font-weight: 600; cursor: pointer; padding: 8px 0; border-radius: 6px; display: flex; align-items: center; justify-content: center; gap: 6px; transition: background 0.2s; }
-        .action-btn:hover { background-color: #0f172a; color: #10b981; }
-        
-        /* Comments Section */
-        .comments-list { margin-top: 10px; display: flex; flex-direction: column; gap: 8px; }
-        .single-comment { background: #0f172a; padding: 8px 12px; border-radius: 8px; font-size: 13px; border: 1px solid #1e293b; }
-        .comment-author { color: #10b981; font-weight: bold; margin-right: 6px; }
-        .comment-box { display: flex; gap: 8px; margin-top: 10px; }
-        .comment-box input { flex: 1; padding: 9px 12px; background-color: #0f172a; border: 1px solid #334155; color: #fff; border-radius: 8px; font-size: 13px; outline: none; }
-        .comment-box button { padding: 9px 15px; background: #10b981; border: none; color: #fff; font-weight: bold; border-radius: 8px; cursor: pointer; font-size: 13px; }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LoveBird Social App</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <!-- Auth Section -->
-    <div id="auth-section" class="auth-card">
-        <div id="login-form">
-            <h2>LoveBird Login</h2>
-            <input type="email" id="login-email" placeholder="ইমেইল">
-            <div class="password-wrapper">
-                <input type="password" id="login-password" placeholder="পাসওয়ার্ড">
-                <span class="toggle-password" onclick="togglePasswordVisibility('login-password', this)">👁️</span>
-            </div>
-            <button onclick="handleLogin()">লগইন করুন</button>
-            <p>একাউন্ট নেই? <span onclick="toggleForm('signup')">নতুন একাউন্ট খুলুন</span></p>
-        </div>
+  <!-- নেভিগেশন বার -->
+  <header class="navbar">
+    <h1 class="logo">Love Bird</h1>
+    <div class="user-info">
+      <button id="logoutBtn">লগআউট</button>
+    </div>
+  </header>
 
-        <div id="signup-form" class="hidden">
-            <h2>Create Account</h2>
-            <input type="text" id="signup-name" placeholder="আপনার নাম">
-            <input type="email" id="signup-email" placeholder="ইমেইল">
-            <div class="password-wrapper">
-                <input type="password" id="signup-password" placeholder="নতুন পাসওয়ার্ড">
-                <span class="toggle-password" onclick="togglePasswordVisibility('signup-password', this)">👁️</span>
-            </div>
-            <button onclick="handleSignup()">একাউন্ট তৈরি করুন</button>
-            <p>একাউন্ট আছে? <span onclick="toggleForm('login')">লগইন করুন</span></p>
-        </div>
-        <div id="auth-message"></div>
+  <!-- মেইন ফিড কন্টেইনার -->
+  <main class="feed-container">
+    
+    <!-- পোস্ট লেখার বক্স -->
+    <div class="create-post-card">
+      <textarea id="postInput" placeholder="আপনার মনে কি আছে?"></textarea>
+      <button id="postBtn">পোস্ট করুন</button>
     </div>
 
-    <!-- Main Newsfeed Section -->
-    <div id="app-section" class="hidden" style="width: 100%; display: flex; flex-direction: column; align-items: center;">
-        <header>
-            <h1>LoveBird</h1>
-            <div class="user-info">
-                <span id="current-user-name">User</span>
-                <button class="logout-btn" onclick="handleLogout()">Logout</button>
-            </div>
-        </header>
+    <!-- পোস্টগুলো যেখানে জমা হয়ে দেখাবে -->
+    <div id="postsFeed"></div>
 
-        <div class="create-post-card">
-            <textarea id="post-text" placeholder="কী চিন্তা করছেন? লিখুন..."></textarea>
-            <button class="post-btn" onclick="createPost()">Post করুন</button>
-        </div>
+  </main>
 
-        <div id="news-feed"></div>
-    </div>
-
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, updateProfile } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-        import { getDatabase, ref, push, onValue, update } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
-
-        const firebaseConfig = {
-          apiKey: "AIzaSyDcc06iibqLo9uczXnZJdikTUa80GyKxWw",
-          authDomain: "love-bird-129df.firebaseapp.com",
-          databaseURL: "https://love-bird-129df-default-rtdb.firebaseio.com",
-          projectId: "love-bird-129df",
-          storageBucket: "love-bird-129df.appspot.com",
-          messagingSenderId: "702723507464",
-          appId: "1:702723507464:web:bb6165276da934105758bd"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getDatabase(app);
-        let currentUser = null;
-
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-                currentUser = user;
-                document.getElementById('auth-section').classList.add('hidden');
-                document.getElementById('app-section').classList.remove('hidden');
-                document.getElementById('current-user-name').innerText = user.displayName || user.email.split('@')[0];
-                loadPosts();
-            } else {
-                currentUser = null;
-                document.getElementById('auth-section').classList.remove('hidden');
-                document.getElementById('app-section').classList.add('hidden');
-            }
-        });
-
-        window.togglePasswordVisibility = (inputId, icon) => {
-            const input = document.getElementById(inputId);
-            input.type = input.type === "password" ? "text" : "password";
-            icon.innerText = input.type === "password" ? "👁️" : "🙈";
-        };
-
-        window.toggleForm = (type) => {
-            document.getElementById('login-form').classList.toggle('hidden', type === 'signup');
-            document.getElementById('signup-form').classList.toggle('hidden', type === 'login');
-            document.getElementById('auth-message').innerText = "";
-        };
-
-        window.handleSignup = () => {
-            const name = document.getElementById('signup-name').value;
-            const email = document.getElementById('signup-email').value;
-            const password = document.getElementById('signup-password').value;
-            const msg = document.getElementById('auth-message');
-
-            if (!name || !email || !password) { msg.innerText = "সবগুলো ঘর পূরণ করুন।"; return; }
-
-            createUserWithEmailAndPassword(auth, email, password)
-                .then((res) => updateProfile(res.user, { displayName: name }))
-                .catch((err) => msg.innerText = err.message);
-        };
-
-        window.handleLogin = () => {
-            const email = document.getElementById('login-email').value;
-            const password = document.getElementById('login-password').value;
-            const msg = document.getElementById('auth-message');
-
-            signInWithEmailAndPassword(auth, email, password).catch((err) => msg.innerText = "লগইন ত্রুটি: " + err.message);
-        };
-
-        window.handleLogout = () => signOut(auth);
-
-        window.createPost = () => {
-            const text = document.getElementById('post-text').value;
-            if (!text.trim()) return;
-
-            push(ref(db, 'posts'), {
-                author: currentUser.displayName || currentUser.email.split('@')[0],
-                content: text,
-                timestamp: Date.now(),
-                likes: 0
-            }).then(() => document.getElementById('post-text').value = "");
-        };
-
-        function loadPosts() {
-            onValue(ref(db, 'posts'), (snapshot) => {
-                const newsFeed = document.getElementById('news-feed');
-                newsFeed.innerHTML = "";
-                const data = snapshot.val();
-                if (!data) return;
-
-                Object.keys(data).reverse().forEach((key) => {
-                    const post = data[key];
-                    const postEl = document.createElement('div');
-                    postEl.className = 'post';
-                    
-                    let commentsHTML = "";
-                    let commentCount = 0;
-                    if (post.comments) {
-                        const commentsArray = Object.values(post.comments);
-                        commentCount = commentsArray.length;
-                        commentsArray.forEach(c => {
-                            commentsHTML += `<div class="single-comment"><span class="comment-author">${c.author}:</span>${c.text}</div>`;
-                        });
-                    }
-
-                    postEl.innerHTML = `
-                        <div class="post-header">
-                            <div class="avatar">${post.author.charAt(0).toUpperCase()}</div>
-                            <div>
-                                <div class="post-author">${post.author}</div>
-                                <div class="post-time">${new Date(post.timestamp).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</div>
-                            </div>
-                        </div>
-                        <div class="post-content">${post.content}</div>
-                        
-                        <div class="post-actions">
-                            <button class="action-btn" onclick="likePost('${key}', ${post.likes || 0})">
-                                ❤️ Like (${post.likes || 0})
-                            </button>
-                            <button class="action-btn" onclick="focusComment('${key}')">
-                                💬 Comment (${commentCount})
-                            </button>
-                            <button class="action-btn" onclick="sharePost()">
-                                ↗️ Share
-                            </button>
-                        </div>
-
-                        <div class="comments-list">${commentsHTML}</div>
-                        <div class="comment-box">
-                            <input type="text" id="comment-input-${key}" placeholder="কমেন্ট লিখুন...">
-                            <button onclick="addComment('${key}')">Send</button>
-                        </div>
-                    `;
-                    newsFeed.appendChild(postEl);
-                });
-            });
-        }
-
-        window.likePost = (postId, currentLikes) => {
-            update(ref(db, `posts/${postId}`), { likes: currentLikes + 1 });
-        };
-
-        window.focusComment = (postId) => {
-            const input = document.getElementById(`comment-input-${postId}`);
-            if (input) input.focus();
-        };
-
-        window.sharePost = () => {
-            if (navigator.clipboard) {
-                navigator.clipboard.writeText(window.location.href);
-                alert("পোস্টের লিঙ্ক কপি করা হয়েছে!");
-            } else {
-                alert("শেয়ার অপশনটি সাপোর্ট করছে না।");
-            }
-        };
-
-        window.addComment = (postId) => {
-            const input = document.getElementById(`comment-input-${postId}`);
-            if (!input.value.trim()) return;
-
-            push(ref(db, `posts/${postId}/comments`), {
-                author: currentUser.displayName || currentUser.email.split('@')[0],
-                text: input.value
-            }).then(() => input.value = "");
-        };
-    </script>
+  <script src="script.js"></script>
 </body>
 </html>
